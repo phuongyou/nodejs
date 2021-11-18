@@ -11,7 +11,11 @@ app.use(morgan('combined'))
 //Static file
 app.use(express.static(path.join(__dirname, 'public')))
 
-
+//Add Midleware
+app.use(express.urlencoded({
+  extended:true
+}))
+app.use(express.json())
 //Template engine
 app.engine('hbs', exphbs({
   extname:'.hbs'
@@ -24,11 +28,14 @@ app.get('/', (req, res) => {
   res.render('home')
 })
 
-app.get('/news', (req, res) => {
-  res.render('news')
+app.get('/search', (req, res) => {
+  res.render('search')
 })
 
-
+app.post('/search', (req, res) => {
+  console.log(req.body)
+  res.render('search')
+})
 
 //127.1.1.1 === localhost
 app.listen(port, () => {
