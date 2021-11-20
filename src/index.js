@@ -5,6 +5,10 @@ const exphbs  = require('express-handlebars')
 const app = express()
 const port = 3000
 
+const router = require('./router/index')
+
+router(app)
+
 //HTTP logger
 app.use(morgan('combined'))
 
@@ -24,18 +28,7 @@ app.set('view engine', 'hbs')
 app.set('views', path.join(__dirname, 'recourses/views'))
 
 
-app.get('/', (req, res) => {
-  res.render('home')
-})
 
-app.get('/search', (req, res) => {
-  res.render('search')
-})
-
-app.post('/search', (req, res) => {
-  console.log(req.body)
-  res.render('search')
-})
 
 //127.1.1.1 === localhost
 app.listen(port, () => {
