@@ -14,7 +14,7 @@ app.use(morgan('combined'));
 app.use(express.static(path.join(__dirname, 'public')));
 
         //Add Midleware
-        app.use(
+         app.use(
             express.urlencoded({
                 extended: true,
             }),
