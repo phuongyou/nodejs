@@ -8,13 +8,13 @@ const port = 3000;
 const router = require('./router/index');
 
 //HTTP logger
-app.use(morgan('combined'));
+        app.use(morgan('combined'));
 
-//Static file
-app.use(express.static(path.join(__dirname, 'public')));
+              //Static file
+              app.use(express.static(path.join(__dirname, 'public')));
 
-        //Add Midleware
-         app.use(
+              //Add Midleware
+              app.use(
             express.urlencoded({
                 extended: true,
             }),
