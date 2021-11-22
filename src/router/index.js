@@ -1,25 +1,19 @@
-const searchRouter = require('./search')
-
+const searchRouter = require('./search');
+const siteRouter = require('./site');
 
 function router(app) {
-
-    app.get('/', (req, res) => {
-      res.render('home')
-    })
-
-    // app.get('/search', (req, res) => {
-    //     res.render('search')
+    // app.get('/', (req, res) => {
+    //   res.render('home')
     // })
 
-    app.use('/search',searchRouter)
+    //Search
 
-    app.post('/search', (req, res) => {
-        console.log(req.body)
-        res.render('search')
-    })
+    app.use('/search', searchRouter);
 
+    //Home
+    app.use('/', siteRouter);
 
-
+    //loi k link dc css
 }
 
-module.exports = router
+module.exports = router;
