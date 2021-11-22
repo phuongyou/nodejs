@@ -11,10 +11,10 @@ const router = require('./router/index');
         app.use(morgan('combined'));
 
               //Static file
-              app.use(express.static(path.join(__dirname, 'public')));
+                 app.use(express.static(path.join(__dirname, 'public')));
 
               //Add Midleware
-              app.use(
+                 app.use(
             express.urlencoded({
                 extended: true,
             }),
