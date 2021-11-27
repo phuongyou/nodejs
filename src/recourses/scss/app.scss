@@ -1,8 +1,11 @@
 @import 'variables';
 
-h1{
+h1 {
     color: greenyellow;
 }
-h2{
-    color:$red-color;
+h2 {
+    color: $red-color;
+}
+.flex-card-name{
+    color: black;
 }

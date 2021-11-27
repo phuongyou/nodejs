@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "beau": "lint-staged",
+    "beau": "prettier --single-quote --trailing-comma all --tab-width 4 --write src/**/*.{js,json,scss}",
     "start": "nodemon --inspect src/index.js",
     "watch": "node-sass --watch src/recourses/scss/ -o src/public/css/",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -23,18 +23,10 @@
     "url": "https://github.com/phuongyou/nodejs/issues"
   },
   "homepage": "https://github.com/phuongyou/nodejs#readme",
-  "lint-staged": {
-    "src/**/*.{js,json,scss}": "prettier --single-quote --trailing-comma all --tab-width 4 --write"
-  },
-
-  "husky":{
-    "hooks":{
-      "pre-commit":"lint-staged"
-    }
-  },
   "dependencies": {
     "express": "^4.17.1",
     "express-handlebars": "^5.3.4",
+    "mongoose": "^6.0.13",
     "node-sass": "^6.0.1"
   },
   "devDependencies": {

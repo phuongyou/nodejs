@@ -5,20 +5,26 @@ const exphbs = require('express-handlebars');
 const app = express();
 const port = 3000;
 
+
+const db = require('./config/db/index')
+
+//Connect DB
+db.connect()
+
 const router = require('./router/index');
 
 //HTTP logger
-        app.use(morgan('combined'));
+app.use(morgan('combined'));
 
-              //Static file
-                 app.use(express.static(path.join(__dirname, 'public')));
+//Static file
+app.use(express.static(path.join(__dirname, 'public')));
 
-              //Add Midleware
-                 app.use(
-            express.urlencoded({
-                extended: true,
-            }),
-        );
+//Add Midleware
+app.use(
+    express.urlencoded({
+        extended: true,
+    }),
+);
 app.use(express.json());
 //Template engine
 app.engine(
