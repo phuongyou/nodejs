@@ -1,4 +1,7 @@
 @import 'variables';
+body{
+    padding-top: 4.5rem;
+}
 
 h1 {
     color: greenyellow;
@@ -6,6 +9,7 @@ h1 {
 h2 {
     color: $red-color;
 }
-.flex-card-name{
+.flex-card-name {
     color: black;
 }
+

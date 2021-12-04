@@ -1,0 +1,221 @@
+<div class="container" >
+
+  <form method="POST" action="/course/multi-delete/">
+    <div class="row mt-2">
+      <h4>Danh Sách Khóa Học ({{countData}})</h4>
+      <a href="/me/recycle/courses" class="ml-auto mr-4 mt-2">Recycle Bin ({{countDelete}})</a>
+    </div>
+
+
+    <div class="form-row align-items-center">
+      <div class="col-auto my-1">
+        <div class="custom-control custom-checkbox mr-sm-2">
+          <input type="checkbox" class="custom-control-input checkAll" id="customControlAutosizing">
+          <label class="custom-control-label" for="customControlAutosizing">Chọn tất cả</label>
+        </div>
+      </div>
+      <div class="col-auto my-1">
+        <select class="custom-select mr-sm-2 selectOption" id="inlineFormCustomSelect" name="action" required>
+          <option selected value=""> Chọn... </option>
+          <option value="delete">Delete</option>
+          <option value="add">Option 2</option>
+
+
+        </select>
+      </div>
+
+      <div class="col-auto my-1">
+        <button class="btn btn-primary actionOption" data-toggle="modal" disabled="disabled">Thực
+          hiện</button>
+
+
+
+      </div>
+    </div>
+
+
+
+    <table class="table mt-4">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th scope="col">STT</th>
+          <th scope="col">Name</th>
+          <th scope="col">Youtube ID</th>
+          <th scope="col">Time Created</th>
+          <th scope="col">Selection</th>
+
+        </tr>
+      </thead>
+
+      <tbody>
+        {{#each course}}
+        <tr>
+          <th><input type="checkbox" class="checkbox" value="{{this._id}}" name="courseIDs[]"> </th>
+          <th scope="row">{{countID @index 1}}</th>
+          <td>{{this.name}}</td>
+          <td>{{this.youtubeID}}</td>
+          <td>{{this.createdAt}}</td>
+          <td> <a href="/course/{{this._id}}/edit" class="btn btn-outline-primary">Update</a></td>
+          <td> <a href="/" class="btn btn-outline-danger" data-toggle="modal" data-target="#exampleModal"
+              data-id-custom="{{this._id}}">Delete</a></td>
+        </tr>
+        {{else}}
+         <tr>
+          <td colspan="7">
+            Hiện tại không có khóa học nào !<a href="/course/create"> Đăng khóa học...</a>
+              </td>
+        </tr>
+      
+
+        {{/each}}
+
+      </tbody>
+
+
+    </table>
+    <!-- Modal Many Delete -->
+    <div class="modal fade" id="deleteMany" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">DELETE</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Are you sure delete all?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+            <button type="submit" class="btn btn-danger">Yes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </form>
+  <!-- Modal Delete-->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">DELETE</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Are you sure ?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+          <button type="button" class="btn btn-danger btndelete">Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+</div>
+
+<form class="direction-delete" method="POST"></form>
+
+
+<script>
+
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var id
+    var btnDelete = document.querySelector(".btndelete")
+    const btndeleteOption = $(".btndeleteOption")
+
+    //const exampleModal = document.querySelector('#exampleModal')
+    const formDelete = document.querySelector(".direction-delete")
+    const checkAll = $(".checkAll")
+    const checkBox = $(".checkbox")
+    const actionOption = $(".actionOption")
+    const selectOptionCourse = $('.selectOption')
+
+
+    //Handle btnDelete
+    $("#exampleModal").on('show.bs.modal', function (event) {
+      // Button that triggered the modal
+      var button = event.relatedTarget
+      // Extract info from data-bs-* attributes
+      id = button.getAttribute('data-id-custom')
+    })
+
+    btnDelete.onclick = function () {
+      formDelete.action = `/course/${id}?_method=DELETE`
+      formDelete.submit()
+    }
+
+    //Check all selected
+    checkAll.change(function (e) {
+      const isCheck = $(this).prop("checked")
+      checkBox.prop("checked", isCheck)
+      actionOption.prop("disabled", !isCheck)
+
+
+    })
+
+    //Check each selected
+    checkBox.change(function () {
+      const lengthInput = $('input[name="courseIDs[]"]').length
+      if (lengthInput === $('input[name="courseIDs[]"]:checked').length) {
+        checkAll.prop("checked", true)
+      } else {
+        checkAll.prop("checked", false)
+      }
+
+      //Handle permit btn Thuc Hien
+      if ($('input[name="courseIDs[]"]:checked').length === 0) {
+        actionOption.attr("disabled", true)
+      } else {
+        actionOption.removeAttr("disabled")
+      }
+
+
+
+    })
+
+    //Selection Options 
+
+
+
+    selectOptionCourse.change(function () {
+      switch ($(this).find(":selected").val()) {
+        case "delete":
+          actionOption.attr("data-target", "#deleteMany")
+          actionOption.attr("type", "button")
+          break;
+        case "":
+          actionOption.removeAttr("data-target", "#deleteMany")
+          actionOption.removeAttr("type")
+
+          break;
+        default:
+          actionOption.removeAttr("data-target")
+      }
+    })
+
+
+
+
+
+
+
+
+  })
+
+</script>

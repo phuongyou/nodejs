@@ -1,0 +1,166 @@
+<div class="container">
+  <dic class="row mt-2">
+    <h4>Khóa Học Đã Bị Xóa ({{countDeleted}})</h4>
+    <a href="/me/store/courses" class="ml-auto mr-4 mt-2">danh sách khóa học ({{count}})</a>
+  </dic>
+  <form method="POST" action="/course/multi-restore/">
+  <div class="form-row align-items-center">
+    <div class="col-auto my-1">
+      <div class="custom-control custom-checkbox mr-sm-2">
+        <input type="checkbox" class="custom-control-input checkAll" id="customControlAutosizing">
+        <label class="custom-control-label" for="customControlAutosizing">Chọn tất cả</label>
+      </div>
+    </div>
+    <div class="col-auto my-1">
+      <select class="custom-select mr-sm-2 selectOption" id="inlineFormCustomSelect" name="action" required>
+        <option selected value=""> Chọn... </option>
+        <option value="restore">Khôi phục</option>
+        <option value="pureDelete">Xóa vĩnh viễn</option>
+
+
+      </select>
+    </div>
+
+    <div class="col-auto my-1">
+      <button type="submit" class="btn btn-primary actionOption" data-toggle="modal" disabled="disabled">Thực
+        hiện</button>
+
+
+
+    </div>
+  </div>
+
+
+  <table class="table mt-4">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th scope="col">STT</th>
+        <th scope="col">Name</th>
+        <th scope="col">Youtube ID</th>
+        <th scope="col">Time Deleted</th>
+        <th scope="col">Selection</th>
+
+      </tr>
+    </thead>
+
+    <tbody>
+      {{#each course}}
+      <tr>
+        <th><input type="checkbox" class="checkbox" value="{{this._id}}" name="courseIDs[]"> </th>
+        <th scope="row">{{countID @index 1}}</th>
+        <td>{{this.name}}</td>
+        <td>{{this.youtubeID}}</td>
+        <td>{{this.deletedAt}}</td>
+        <td> <a href="" class="btn btn-outline-primary btnrestore" data-id-restore="{{this._id}}">Khôi phục</a></td>
+        <td> <a href="" class="btn btn-outline-danger" data-toggle="modal" data-target="#exampleModal"
+            data-id-custom="{{this._id}}">Xóa vĩnh viễn</a></td>
+      </tr>
+      {{/each}}
+
+    </tbody>
+
+
+  </table>
+</form>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">DELETE</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Sau khi bấm "YES" sẽ k thể khôi phục lại khóa học! </br>
+          Bạn có chắc chứ ?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+          <button type="button" class="btn btn-danger btndelete">Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<form class="direction-delete" method="POST"></form>
+<form class="direction-restore" method="POST"></form>
+
+
+
+<script>
+
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var id
+    const btnDelete = document.querySelector(".btndelete")
+    const btnRestore = $(".btnrestore")
+    const btnSubmit = $(".actionOption")
+
+    //const exampleModal = document.querySelector('#exampleModal')
+    const formDelete = document.querySelector(".direction-delete")
+    const formRestore = document.querySelector(".direction-restore")
+    const checkAll = $(".checkAll")
+    const checkBox = $(".checkbox")
+
+
+
+    $("#exampleModal").on('show.bs.modal', function (event) {
+      // Button that triggered the modal
+      var button = event.relatedTarget
+      // Extract info from data-bs-* attributes
+      id = button.getAttribute('data-id-custom')
+
+
+    })
+
+    btnDelete.onclick = function (e) {
+      formDelete.action = `/course/${id}/forceDelete?_method=DELETE`
+      formDelete.submit()
+    }
+
+    btnRestore.click(function (e) {
+      e.preventDefault()
+      const id = this.getAttribute("data-id-restore")
+      formRestore.action = `/course/${id}/restore?_method=POST`
+      formRestore.submit()
+
+    })
+
+    //handle Chon tat Ca
+    checkAll.change(function () {
+      const isCheck = $(this).prop("checked")
+      checkBox.prop("checked", isCheck)
+      btnSubmit.prop("disabled", !isCheck)
+    })
+
+    checkBox.change(function () {
+      const inputCheck = $("input[name='courseIDs[]']").length
+      const checked = $("input[name='courseIDs[]']:checked").length
+
+      if (checked === inputCheck) {
+        checkAll.prop("checked", true)
+
+      } else {
+        checkAll.prop("checked", false)
+      }
+
+
+      if (checked == 0) {
+        btnSubmit.prop("disabled", true)
+      } else {
+        btnSubmit.prop("disabled", false)
+
+      }
+
+
+    })
+
+  })
+
+</script>

@@ -5,11 +5,13 @@ const exphbs = require('express-handlebars');
 const app = express();
 const port = 3000;
 
+const db = require('./config/db/index');
 
-const db = require('./config/db/index')
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'))
 
 //Connect DB
-db.connect()
+db.connect();
 
 const router = require('./router/index');
 
@@ -31,6 +33,10 @@ app.engine(
     'hbs',
     exphbs({
         extname: '.hbs',
+        helpers: {
+            countID(a, b) { return a + b; },
+            selectID(id) { return id ;},
+        }
     }),
 );
 app.set('view engine', 'hbs');
