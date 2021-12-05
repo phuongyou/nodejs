@@ -6,6 +6,8 @@ const app = express();
 const port = 3000;
 
 const db = require('./config/db/index');
+const midleWare = require('./app/midleware/meMidleware')
+
 
 const methodOverride = require('method-override')
 app.use(methodOverride('_method'))
@@ -42,6 +44,7 @@ app.engine(
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'recourses/views'));
 
+app.use(midleWare)
 router(app);
 
 //127.1.1.1 === localhost

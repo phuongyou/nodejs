@@ -2,7 +2,7 @@
 
   <form method="POST" action="/course/multi-delete/">
     <div class="row mt-2">
-      <h4>Danh Sách Khóa Học ({{countData}})</h4>
+      <h4>Danh Sách Khóa Học ({{countData}}) {{_sort.type}}</h4>
       <a href="/me/recycle/courses" class="ml-auto mr-4 mt-2">Recycle Bin ({{countDelete}})</a>
     </div>
 
@@ -40,7 +40,7 @@
         <tr>
           <th>#</th>
           <th scope="col">STT</th>
-          <th scope="col">Name</th>
+          <th scope="col">Name <a href="?_sort&column=name&type=asc"><i class="fas fa-sort-down"></i></a></i></th>
           <th scope="col">Youtube ID</th>
           <th scope="col">Time Created</th>
           <th scope="col">Selection</th>
